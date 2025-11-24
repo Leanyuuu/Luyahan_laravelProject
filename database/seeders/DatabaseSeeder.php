@@ -19,5 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seed Room Types and Rooms
+        $this->call([
+            RoomTypeSeeder::class,
+            RoomSeeder::class,
+        ]);
     }
 }
