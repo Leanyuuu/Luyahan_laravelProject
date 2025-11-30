@@ -14,7 +14,7 @@
         @endif
 
         <!-- Stats Cards -->
-        <div class="grid auto-rows-min gap-6 md:grid-cols-3">
+        <div class="grid auto-rows-min gap-6 md:grid-cols-2 lg:grid-cols-4">
             <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-600 p-6 shadow-xl shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/40">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent"></div>
                 <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
@@ -60,6 +60,22 @@
                     <div class="rounded-2xl bg-white/25 p-4 backdrop-blur-md shadow-lg">
                         <svg class="h-9 w-9 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600 p-6 shadow-xl shadow-purple-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/40">
+                <div class="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent"></div>
+                <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
+                <div class="relative flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-semibold text-purple-100/90 uppercase tracking-wide">Room Types</p>
+                        <h3 class="mt-3 text-5xl font-extrabold text-white drop-shadow-lg">{{ $totalRoomTypes }}</h3>
+                    </div>
+                    <div class="rounded-2xl bg-white/25 p-4 backdrop-blur-md shadow-lg">
+                        <svg class="h-9 w-9 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>
                     </div>
                 </div>

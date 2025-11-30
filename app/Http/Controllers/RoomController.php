@@ -14,8 +14,9 @@ class RoomController extends Controller
         $roomTypes = RoomType::all();
         $totalRooms = Room::count();
         $availableRooms = Room::where('status', 'available')->count();
+        $totalRoomTypes = RoomType::count();
 
-        return view('dashboard', compact('rooms', 'roomTypes', 'totalRooms', 'availableRooms'));
+        return view('dashboard', compact('rooms', 'roomTypes', 'totalRooms', 'availableRooms', 'totalRoomTypes'));
     }
 
     public function store(Request $request)
