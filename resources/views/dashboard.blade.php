@@ -82,6 +82,54 @@
             </div>
         </div>
 
+        <!-- Filters & Actions -->
+        <div class="flex flex-col gap-3 rounded-2xl border border-slate-200/60 bg-white p-4 shadow-lg dark:border-slate-700/60 dark:bg-slate-800/50 md:flex-row md:items-center md:justify-between">
+            <form action="{{ route('dashboard') }}" method="GET" class="flex flex-1 flex-col gap-3 md:flex-row md:items-center">
+                <div class="flex-1">
+                    <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Search</label>
+                    <input type="search" name="search" value="{{ $search }}" placeholder="Search by room number, floor, or type" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm transition-all duration-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100">
+                </div>
+
+                <div class="md:w-52">
+                    <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Status</label>
+                    <select name="status" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm transition-all duration-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100">
+                        <option value="">All</option>
+                        <option value="available" {{ $statusFilter === 'available' ? 'selected' : '' }}>Available</option>
+                        <option value="occupied" {{ $statusFilter === 'occupied' ? 'selected' : '' }}>Occupied</option>
+                        <option value="maintenance" {{ $statusFilter === 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                    </select>
+                </div>
+
+                <div class="md:w-64">
+                    <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Room Type</label>
+                    <select name="room_type_id" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm transition-all duration-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100">
+                        <option value="">All</option>
+                        @foreach($roomTypes as $roomType)
+                            <option value="{{ $roomType->id }}" {{ (string) $roomTypeFilter === (string) $roomType->id ? 'selected' : '' }}>
+                                {{ $roomType->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="submit" class="rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">Apply</button>
+                    <a href="{{ route('dashboard') }}" class="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Clear</a>
+                </div>
+            </form>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('rooms.export.pdf', request()->query()) }}" class="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition hover:scale-105 hover:shadow-xl">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Export PDF
+                </a>
+                <a href="{{ route('rooms.trash') }}" class="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 shadow-sm transition hover:shadow-md dark:border-rose-800/60 dark:bg-rose-900/20 dark:text-rose-200">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Trash ({{ $trashCount }})
+                </a>
+            </div>
+        </div>
+
         <!-- Room Management Section -->
         <div class="relative h-full flex-1 overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-xl dark:border-slate-700/60 dark:bg-slate-800/50 backdrop-blur-sm">
             <div class="flex h-full flex-col p-6">
@@ -89,7 +137,7 @@
                 <div class="mb-6 rounded-xl border border-slate-200/60 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 p-6 shadow-lg dark:border-slate-700/60 dark:from-slate-900/80 dark:via-slate-800/60 dark:to-slate-900/40">
                     <h2 class="mb-4 text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-blue-400">Add New Room</h2>
 
-                    <form action="{{ route('rooms.store') }}" method="POST" class="grid gap-4 md:grid-cols-2">
+                    <form action="{{ route('rooms.store') }}" method="POST" enctype="multipart/form-data" class="grid gap-4 md:grid-cols-2">
                         @csrf
 
                         <div>
@@ -135,6 +183,14 @@
                             @enderror
                         </div>
 
+                        <div class="md:col-span-2">
+                            <label class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">Photo (JPG/PNG, max 2MB)</label>
+                            <input type="file" name="photo" accept=".jpg,.jpeg,.png" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm transition-all duration-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:shadow-md dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-indigo-400">
+                            @error('photo')
+                                <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="md:col-span-2 flex justify-end">
                             <button type="submit" class="rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-500/30">
                                 Add Room
@@ -151,6 +207,7 @@
                             <thead>
                                 <tr class="border-b border-slate-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-slate-50 dark:border-slate-700 dark:from-slate-800/80 dark:via-indigo-900/20 dark:to-slate-800/60">
                                     <th class="px-4 py-3 text-left text-sm font-bold text-slate-700 dark:text-slate-200">#</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">Photo</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">Room Number</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">Floor</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">Status</th>
@@ -162,6 +219,15 @@
                                 @forelse($rooms as $room)
                                     <tr class="transition-all duration-200 hover:bg-gradient-to-r hover:from-indigo-50 hover:via-blue-50 hover:to-transparent dark:hover:from-indigo-900/30 dark:hover:via-blue-900/20 dark:hover:to-transparent">
                                         <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-3">
+                                            @if($room->photo_url)
+                                                <img src="{{ $room->photo_url }}" alt="Room {{ $room->room_number }} photo" class="h-10 w-10 rounded-full object-cover shadow-sm ring-2 ring-indigo-100 dark:ring-indigo-900/40">
+                                            @else
+                                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 text-sm font-bold uppercase text-white shadow-sm">
+                                                    {{ $room->initials }}
+                                                </div>
+                                            @endif
+                                        </td>
                                         <td class="px-4 py-3 text-sm text-neutral-900 dark:text-neutral-100">{{ $room->room_number }}</td>
                                         <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $room->floor }}</td>
                                         <td class="px-4 py-3 text-sm">
@@ -215,7 +281,7 @@
         <div class="w-full max-w-2xl rounded-2xl border border-slate-200/60 bg-white p-8 shadow-2xl dark:border-slate-700/60 dark:bg-slate-800/95 backdrop-blur-xl">
             <h2 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">Edit Room</h2>
 
-            <form id="editRoomForm" method="POST">
+            <form id="editRoomForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -251,6 +317,12 @@
                                 <option value="{{ $roomType->id }}">{{ $roomType->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">Update Photo (optional)</label>
+                        <input type="file" name="photo" accept=".jpg,.jpeg,.png" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm transition-all duration-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:shadow-md dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-indigo-400">
+                        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Leave empty to keep current photo.</p>
                     </div>
                 </div>
 

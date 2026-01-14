@@ -23,6 +23,15 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item
+                        icon="trash"
+                        :href="route('rooms.trash')"
+                        :current="request()->routeIs('rooms.trash')"
+                        class="rounded-lg transition-all duration-200 hover:bg-gradient-to-r hover:from-rose-50 hover:via-amber-50 hover:to-rose-50 hover:shadow-md dark:hover:from-rose-900/30 dark:hover:via-amber-900/20 dark:hover:to-rose-900/30"
+                        wire:navigate>
+                        {{ __('Trash') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item
                 icon="home-modern" 
                     :href="route('room-types.index')" 
                     :current="request()->routeIs('room-types.*')"
