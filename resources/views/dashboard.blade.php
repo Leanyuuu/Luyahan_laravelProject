@@ -220,8 +220,8 @@
                                     <tr class="transition-all duration-200 hover:bg-gradient-to-r hover:from-indigo-50 hover:via-blue-50 hover:to-transparent dark:hover:from-indigo-900/30 dark:hover:via-blue-900/20 dark:hover:to-transparent">
                                         <td class="px-4 py-3 text-sm text-neutral-600 dark:text-neutral-400">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3">
-                                            @if($room->photo_url)
-                                                <img src="{{ $room->photo_url }}" alt="Room {{ $room->room_number }} photo" class="h-10 w-10 rounded-full object-cover shadow-sm ring-2 ring-indigo-100 dark:ring-indigo-900/40">
+                                            @if($room->photo_path)
+                                                <img src="{{ asset('storage/' . $room->photo_path) }}" alt="Room {{ $room->room_number }} photo" class="h-10 w-10 rounded-full object-cover shadow-sm ring-2 ring-indigo-100 dark:ring-indigo-900/40">
                                             @else
                                                 <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 text-sm font-bold uppercase text-white shadow-sm">
                                                     {{ $room->initials }}
